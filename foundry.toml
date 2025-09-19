@@ -1,0 +1,37 @@
+[profile.default]
+src = "contracts"
+out = "out"
+libs = ["lib"]
+solc = "0.8.20"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+verbosity = 2
+
+# RPC endpoints
+[rpc_endpoints]
+base_sepolia = "${BASE_SEPOLIA_RPC}"
+base_mainnet = "${BASE_MAINNET_RPC}"
+anvil = "http://localhost:8545"
+
+# Etherscan configuration
+[etherscan]
+base_sepolia = { key = "${BASESCAN_API_KEY}", url = "https://api-sepolia.basescan.org/api" }
+base_mainnet = { key = "${BASESCAN_API_KEY}", url = "https://api.basescan.org/api" }
+
+# Test configuration
+[profile.default.test]
+fuzz = { runs = 1000 }
+invariant = { runs = 256, depth = 15 }
+
+# Gas reporting
+[profile.default.gas_reports]
+enabled = true
+reports = ["*"]
+
+# Formatter configuration
+[fmt]
+line_length = 100
+tab_width = 4
+bracket_spacing = true
+int_types = "long"
