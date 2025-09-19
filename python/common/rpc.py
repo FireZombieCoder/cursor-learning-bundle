@@ -1,11 +1,14 @@
-from web3 import Web3
-from dataclasses import dataclass
 import os
+from dataclasses import dataclass
+
+from web3 import Web3
+
 
 @dataclass
 class RPC:
     url: str
     chain_id: int
+
 
 def get_rpc() -> RPC:
     url = os.getenv("BASE_SEPOLIA_RPC") or os.getenv("BASE_MAINNET_RPC")

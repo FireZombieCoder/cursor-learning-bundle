@@ -13,16 +13,16 @@ contract DeployHelloBase is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         address deployer = vm.addr(deployerPrivateKey);
-        
+
         console.log("Deploying contracts with account:", deployer);
         console.log("Account balance:", deployer.balance);
-        
+
         vm.startBroadcast(deployerPrivateKey);
-        
+
         HelloBase helloBase = new HelloBase("Hello Base Sepolia!");
-        
+
         vm.stopBroadcast();
-        
+
         console.log("HelloBase deployed to:", address(helloBase));
         console.log("Initial message:", helloBase.message());
         console.log("Contract owner:", helloBase.owner());

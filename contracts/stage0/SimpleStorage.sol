@@ -12,46 +12,46 @@ contract SimpleStorage {
     string public storedString;
     address public owner;
     bool public isLocked;
-    
+
     // Struct to demonstrate complex data types
     struct UserData {
         string name;
         uint256 age;
         bool isActive;
     }
-    
+
     // Storage mapping
     mapping(address => UserData) public users;
-    
+
     // Events
     event DataStored(uint256 indexed newData, address indexed setter);
     event StringStored(string newString, address indexed setter);
     event UserRegistered(address indexed user, string name, uint256 age);
     event ContractLocked(address indexed locker);
-    
+
     // Custom errors
     error Unauthorized();
     error ContractLocked();
     error InvalidAge();
     error EmptyName();
-    
+
     modifier onlyOwner() {
         if (msg.sender != owner) revert Unauthorized();
         _;
     }
-    
+
     modifier notLocked() {
         if (isLocked) revert ContractLocked();
         _;
     }
-    
+
     constructor() {
         owner = msg.sender;
         storedData = 0;
         storedString = "Initial String";
         isLocked = false;
     }
-    
+
     /**
      * @dev Store a uint256 value
      * @param _data The value to store
@@ -60,7 +60,7 @@ contract SimpleStorage {
         storedData = _data;
         emit DataStored(_data, msg.sender);
     }
-    
+
     /**
      * @dev Store a string value
      * @param _string The string to store
@@ -70,7 +70,7 @@ contract SimpleStorage {
         storedString = _string;
         emit StringStored(_string, msg.sender);
     }
-    
+
     /**
      * @dev Register user data
      * @param _name User's name
@@ -79,16 +79,16 @@ contract SimpleStorage {
     function registerUser(string calldata _name, uint256 _age) external notLocked {
         if (bytes(_name).length == 0) revert EmptyName();
         if (_age == 0 || _age > 150) revert InvalidAge();
-        
+
         users[msg.sender] = UserData({
             name: _name,
             age: _age,
             isActive: true
         });
-        
+
         emit UserRegistered(msg.sender, _name, _age);
     }
-    
+
     /**
      * @dev Get user data
      * @param _user The user's address
@@ -100,7 +100,7 @@ contract SimpleStorage {
         UserData memory user = users[_user];
         return (user.name, user.age, user.isActive);
     }
-    
+
     /**
      * @dev Lock the contract (only owner)
      */
@@ -108,7 +108,7 @@ contract SimpleStorage {
         isLocked = true;
         emit ContractLocked(msg.sender);
     }
-    
+
     /**
      * @dev Get contract state
      * @return data The stored uint256 data
@@ -124,7 +124,7 @@ contract SimpleStorage {
     ) {
         return (storedData, storedString, owner, isLocked);
     }
-    
+
     /**
      * @dev Demonstrate memory vs storage
      * @param _input Input value
@@ -134,7 +134,7 @@ contract SimpleStorage {
         // Memory variables (temporary, cheaper)
         uint256 memoryVar = _input * 2;
         uint256 anotherMemoryVar = memoryVar + 10;
-        
+
         // Return the result (memory variables are discarded after function execution)
         return anotherMemoryVar;
     }

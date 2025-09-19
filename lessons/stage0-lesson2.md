@@ -55,24 +55,24 @@ pragma solidity ^0.8.20;
 contract HelloBase {
     string public message;
     address public owner;
-    
+
     // Events for logging
     event MessageUpdated(string newMessage, address updater);
-    
+
     // Custom errors (gas efficient)
     error Unauthorized();
-    
+
     constructor(string memory _message) {
         message = _message;
         owner = msg.sender;
     }
-    
+
     function updateMessage(string memory _newMessage) external {
         if (msg.sender != owner) revert Unauthorized();
         message = _newMessage;
         emit MessageUpdated(_newMessage, msg.sender);
     }
-    
+
     function getMessage() external view returns (string memory) {
         return message;
     }

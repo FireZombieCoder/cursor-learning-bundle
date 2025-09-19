@@ -23,34 +23,34 @@ contract HelloBaseTest is Test {
     HelloBase public helloBase;
     address public owner = address(1);
     address public user = address(2);
-    
+
     function setUp() public {
         // Deploy contract with owner as msg.sender
         vm.prank(owner);
         helloBase = new HelloBase("Initial Message");
     }
-    
+
     function testInitialMessage() public {
         assertEq(helloBase.message(), "Initial Message");
         assertEq(helloBase.owner(), owner);
     }
-    
+
     function testUpdateMessage() public {
         vm.prank(owner);
         helloBase.updateMessage("New Message");
         assertEq(helloBase.message(), "New Message");
     }
-    
+
     function testUnauthorizedUpdate() public {
         vm.prank(user);
         vm.expectRevert(HelloBase.Unauthorized.selector);
         helloBase.updateMessage("Hacked Message");
     }
-    
+
     function testEventEmission() public {
         vm.expectEmit(true, true, true, true);
         emit HelloBase.MessageUpdated("Test Message", owner);
-        
+
         vm.prank(owner);
         helloBase.updateMessage("Test Message");
     }
@@ -170,16 +170,16 @@ Try to optimize this contract for gas efficiency:
 contract HelloBaseOptimized {
     string public message;
     address public immutable owner; // immutable is cheaper than storage
-    
+
     event MessageUpdated(string indexed newMessage, address indexed updater);
-    
+
     error Unauthorized();
-    
+
     constructor(string memory _message) {
         message = _message;
         owner = msg.sender;
     }
-    
+
     function updateMessage(string calldata _newMessage) external {
         if (msg.sender != owner) revert Unauthorized();
         message = _newMessage;

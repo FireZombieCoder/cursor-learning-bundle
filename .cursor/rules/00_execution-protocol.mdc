@@ -1,6 +1,6 @@
 ---
 description: execution protocol
-globs: 
+globs:
     "**/*.mdc",
     "**/*execution-protocol*"
 alwaysApply: true

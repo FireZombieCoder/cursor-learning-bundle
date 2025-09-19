@@ -9,16 +9,16 @@ pragma solidity ^0.8.20;
 contract HelloBase {
     string public message;
     address public immutable owner;
-    
+
     // Events for logging important state changes
     event MessageUpdated(string newMessage, address indexed updater);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-    
+
     // Custom errors for gas-efficient error handling
     error Unauthorized();
     error EmptyMessage();
     error SameMessage();
-    
+
     /**
      * @dev Constructor sets the initial message and owner
      * @param _message The initial message to store
@@ -28,7 +28,7 @@ contract HelloBase {
         message = _message;
         owner = msg.sender;
     }
-    
+
     /**
      * @dev Updates the stored message
      * @param _newMessage The new message to store
@@ -41,11 +41,11 @@ contract HelloBase {
         if (msg.sender != owner) revert Unauthorized();
         if (bytes(_newMessage).length == 0) revert EmptyMessage();
         if (keccak256(bytes(_newMessage)) == keccak256(bytes(message))) revert SameMessage();
-        
+
         message = _newMessage;
         emit MessageUpdated(_newMessage, msg.sender);
     }
-    
+
     /**
      * @dev Returns the current message
      * @return The current stored message
@@ -53,7 +53,7 @@ contract HelloBase {
     function getMessage() external view returns (string memory) {
         return message;
     }
-    
+
     /**
      * @dev Returns the contract owner
      * @return The address of the contract owner
@@ -61,7 +61,7 @@ contract HelloBase {
     function getOwner() external view returns (address) {
         return owner;
     }
-    
+
     /**
      * @dev Returns the length of the current message
      * @return The length of the message in bytes
@@ -69,7 +69,7 @@ contract HelloBase {
     function getMessageLength() external view returns (uint256) {
         return bytes(message).length;
     }
-    
+
     /**
      * @dev Checks if a given address is the owner
      * @param _address The address to check

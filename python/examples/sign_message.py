@@ -1,9 +1,10 @@
-import os, json
 from dotenv import load_dotenv
-from web3 import Web3
 from eth_account.messages import encode_defunct
-from common.rpc import get_rpc
-from common.wallet import load_account
+from web3 import Web3
+
+from python.common.rpc import get_rpc
+from python.common.wallet import load_account
+
 
 def main():
     load_dotenv()
@@ -16,6 +17,7 @@ def main():
     print("Address:", acct.address)
     print("ChainID:", rpc.chain_id)
     print("Sig (r,s,v):", sig.r, sig.s, sig.v)
+
 
 if __name__ == "__main__":
     main()
