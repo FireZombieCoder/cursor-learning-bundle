@@ -24,16 +24,25 @@ OUT_FILE="$TASKS_DIR/${TASK_FILE_NAME}_${TASK_IDENT}.md"
 # Extract the Execution Protocol block verbatim
 EXEC_PROTO="$(awk '/^Execution Protocol:/{flag=1;print;next}/^Task File Template:/{flag=0}flag' "$RULE")"
 
-# Build the task file from template
-sed \
- -e "s/\[TASK_FILE_NAME\]/${TASK_FILE_NAME}_${TASK_IDENT}/g" \
- -e "s/\[DATETIME\]/${DT_STR}/g" \
- -e "s/\[USER_NAME\]/${USER_NAME}/g" \
- -e "s/\[MAIN BRANCH\]/${MAIN_BRANCH}/g" \
- -e "s/\[TASK BRANCH\]/${TASK_BRANCH}/g" \
- -e "s/\[AUTO-RUN MODE\]/${AUTO_RUN}/g" \
- -e "s|\[EXECUTION_PROTOCOL_VERBATIM\]|${EXEC_PROTO//|/\\|}|g" \
- "$TPL" > "$OUT_FILE"
+# Build the task file from template using awk to avoid sed escaping issues
+awk -v task_file_name="${TASK_FILE_NAME}_${TASK_IDENT}" \
+    -v datetime="$DT_STR" \
+    -v user_name="$USER_NAME" \
+    -v main_branch="$MAIN_BRANCH" \
+    -v task_branch="$TASK_BRANCH" \
+    -v auto_run="$AUTO_RUN" \
+    -v exec_proto="$EXEC_PROTO" '
+{
+    gsub(/\[TASK_FILE_NAME\]/, task_file_name)
+    gsub(/\[DATETIME\]/, datetime)
+    gsub(/\[USER_NAME\]/, user_name)
+    gsub(/\[MAIN BRANCH\]/, main_branch)
+    gsub(/\[TASK BRANCH\]/, task_branch)
+    gsub(/\[AUTO-RUN MODE\]/, auto_run)
+    gsub(/\[EXECUTION_PROTOCOL_VERBATIM\]/, exec_proto)
+    print
+}
+' "$TPL" > "$OUT_FILE"
 
 echo "[✓] Created task file: $OUT_FILE"
 echo "[i] Next: create branch and begin step 1:"
