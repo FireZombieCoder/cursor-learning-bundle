@@ -1,0 +1,52 @@
+---
+name: "Solidity on Base/OP — Curriculum Orchestrator"
+globs:
+  "**/*.md"
+  "**/*.sol"
+  "**/*.py"
+alwaysApply: false
+---
+
+# Goal
+When /curriculum or /curriculum build is invoked, generate or update a staged curriculum for Solidity on **Base (8453) / Base-Sepolia (84532)** with exercises, quizzes, Foundry labs, and Python `web3.py` tasks.
+
+# Stages
+- Stage 0: EVM Basics & Tooling (Foundry/Anvil, RPC env, .env setup)
+- Stage 1: Solidity Core (types, memory/storage/calldata, events)
+- Stage 2: Deploy/Interact on Base-Sepolia (ERC20/ERC721, subgraph optional)
+- Stage 3: Security & Gas (reentrancy, access control, PUSH0/MCOPY/TSTORE/TLOAD)
+- Stage 4: Python Integration (web3.py calls, events, scripts, key mgmt)
+- Stage 5: Capstone (end-to-end dApp on Base)
+For each stage produce: lessons/*.md, contracts/*, tests/*, python/*, quizzes/*.md
+
+# Deliverables for each Stage
+- 3–5 short lessons (markdown), 1–2 Solidity snippets each
+- ≥2 exercises (guided + open), with expected outputs
+- 1 Python CLI task using `web3.py` for the stage
+- A Foundry test (`forge test`) and gas snapshot
+- A short quiz (5–8 Qs)
+- “Done Criteria” checklist
+
+# Constraints
+- Solidity ≥0.8.20, Foundry, `web3.py` 6.x
+- Chain IDs: 8453 (Base), 84532 (Base-Sepolia)
+- Avoid deprecated SELFDESTRUCT patterns; include custom errors; use events.
+- All new code must include comments and tests.
+- Add `.env.example` with `BASE_SEPOLIA_RPC`, `PRIVATE_KEY`, `CHAIN_ID=84532`.
+
+# Output Format
+Write new/updated files with deterministic names:
+- lessons/stage{N}-lesson{K}.md
+- contracts/stage{N}/*.sol
+- test/stage{N}/*.t.sol
+- python/stage{N}/*.py
+- quizzes/stage{N}.md
+
+# Quality Gates
+- Build passes: `forge build`
+- Tests pass: `forge test -vvv`
+- Lints clean (if available), gas snapshot updated
+- Python task runs locally against Anvil or Base-Sepolia
+
+# Example Command
+/curriculum build stage=2 topic="ERC20 + Python Minter CLI"

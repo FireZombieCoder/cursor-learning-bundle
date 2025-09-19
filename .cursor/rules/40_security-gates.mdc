@@ -1,0 +1,17 @@
+---
+name: "Security & Invariants — Gates"
+globs: "**/*.sol"
+alwaysApply: false
+---
+
+# Musts
+- Use Checks-Effects-Interactions
+- Guard external entrypoints (Ownable/AccessControl where needed)
+- Prefer `STATICCALL` for reads; avoid `tx.origin`
+- Emit events for state changes
+- For proxies, document storage layout; forbid `delegatecall` footguns
+- Write invariant tests (Foundry `invariant`), fuzz tests
+
+# L2-Specific
+- Be explicit about finality/bridge delays in UX layers
+- Avoid assumptions about ordering that MEV can break

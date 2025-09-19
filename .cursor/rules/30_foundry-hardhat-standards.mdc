@@ -1,0 +1,25 @@
+---
+name: "Foundry Standards — Build/Test/Trace"
+globs: "**/*.sol"
+alwaysApply: false
+---
+
+# Build/Test
+- solc: 0.8.26 (or project-pinned); optimizer runs >= 200
+- All contracts must have tests under `test/`
+- Include `forge snapshot` for gas diffs on PRs
+- Provide `Makefile` targets: build/test/snapshot/trace
+
+# Tracing
+- Use `cast rpc debug_traceTransaction <txhash>` and store under `traces/`
+- Provide an annotator script (Python) that enriches structLogs
+- For low-level paths, demonstrate `STATICCALL`, `RETURNDATASIZE`, `RETURNDATACOPY`
+
+# Networks
+- Local: anvil
+- Test: Base-Sepolia (84532)
+- Main: Base (8453)
+
+# Deployment
+- Include `script/Deploy.s.sol` with broadcast settings
+- `.env` binds RPC, key, chainId; do not commit secrets

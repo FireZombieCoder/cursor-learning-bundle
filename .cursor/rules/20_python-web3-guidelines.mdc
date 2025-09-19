@@ -1,0 +1,27 @@
+---
+name: "Python Web3 Interaction — Guidelines"
+globs: "**/*.py"
+alwaysApply: false
+---
+
+# Objectives
+Provide consistent, safe Python `web3.py` interaction patterns with Base/Base-Sepolia:
+- Load `.env` (`python-dotenv`), connect to RPC, validate chainId
+- Build/read-only calls with `eth_call`, build/send txs with `eth_sendRawTransaction`
+- Decode events using ABI; paginate logs; retry/backoff
+- Key management via env (do not commit keys); `eth-account` for signing
+
+# Boilerplate Snippet (to be adapted)
+- `python/common/rpc.py`: provider factory (HTTP), chainId check
+- `python/common/wallet.py`: load PK, account, nonce mgmt
+- `python/common/abi.py`: load ABI JSON
+- `python/examples/erc20_mint.py`: CLI: `--to`, `--amount`, `--contract`
+
+# Required Files
+- `python/requirements.txt` must include: web3>=6, eth-account, python-dotenv, rich
+- `.env.example` must include: BASE_SEPOLIA_RPC=, PRIVATE_KEY=, CHAIN_ID=84532
+
+# Safety
+- Never print full private keys; partial masking only
+- Confirm chainId matches expected before sending tx
+- Always specify gas limit & maxFee fields or use eth_estimateGas with margin
